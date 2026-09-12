@@ -30,17 +30,17 @@ let fleetsStore = [
 ];
 
 let freightsStore = [
-  { id: 1, announcement_number: '249', announcement_type: 'نوع اول', customer_reference: 'حواله آقای میر هاشمی', origin: 'کاشی اصفهان (نجف آباد)', destination: 'گمرک شلمچه', cargo_type: 'پالت کاشی میرجلیلی', weight: '24 تن', net_price: '۴۶ م', total_price: '۵۳ م', commission: '۵۰۰', bill_of_lading_company: 'ایمان بار', agent_name: 'محمدحسین کرم سیچانی', created_at: '۱۴۰۵/۰۶/۲۰' },
-  { id: 2, announcement_number: '249', announcement_type: 'نوع دوم', customer_reference: 'حواله آقای میر هاشمی', origin: 'نجف آباد', destination: 'گمرک شلمچه', cargo_type: 'پالت کاشی میرجلیلی', weight: '22 تن', net_price: '۴۵ م', total_price: '۵۲ م', commission: '۵۰۰', bill_of_lading_company: 'ایمان بار', agent_name: 'محمدحسین کرم سیچانی', created_at: '۱۴۰۵/۰۶/۲۰' },
-  { id: 3, announcement_number: '237', announcement_type: 'نوع دوم', customer_reference: 'حافظی پالت کاشی نیلو', origin: 'نجف آباد', destination: 'چذابه', cargo_type: 'پالت کاشی نیلو', weight: '25 تن', net_price: '۴۸ م', total_price: '۵۵ م', commission: '—', bill_of_lading_company: 'ایمان بار', agent_name: 'مژگان مغازه ای', created_at: '۱۴۰۵/۰۶/۲۰' },
+  { id: 1, announcement_number: '249', announcement_type: 'نوع اول', customer_reference: 'حواله آقای میر هاشمی', origin: 'کاشی اصفهان (نجف آباد)', destination: 'گمرک شلمچه', cargo_type: 'پالت کاشی میرجلیلی', weight: '24 تن', net_price: '۴۶ م', total_price: '۵۳ م', commission: '۵۰۰', bill_of_lading_company: 'ایمان بار', agent_name: 'محمدحسین کرم سیچانی', is_unpressed: true, created_at: '۱۴۰۵/۰۶/۲۰' },
+  { id: 2, announcement_number: '249', announcement_type: 'نوع دوم', customer_reference: 'حواله آقای میر هاشمی', origin: 'نجف آباد', destination: 'گمرک شلمچه', cargo_type: 'پالت کاشی میرجلیلی', weight: '22 تن', net_price: '۴۵ م', total_price: '۵۲ م', commission: '۵۰۰', bill_of_lading_company: 'ایمان بار', agent_name: 'محمدحسین کرم سیچانی', is_unpressed: true, created_at: '۱۴۰۵/۰۶/۲۰' },
+  { id: 3, announcement_number: '237', announcement_type: 'نوع دوم', customer_reference: 'حافظی پالت کاشی نیلو', origin: 'نجف آباد', destination: 'چذابه', cargo_type: 'پالت کاشی نیلو', weight: '25 تن', net_price: '۴۸ م', total_price: '۵۵ م', commission: '—', bill_of_lading_company: 'ایمان بار', agent_name: 'مژگان مغازه ای', is_unpressed: false, created_at: '۱۴۰۵/۰۶/۲۰' },
 ];
 
 let tripsStore = [
-  { id: 984, trip_number: 'سفر ۹۸۴#', driver_id: 1, fleet_id: 1, freight_id: 1, status: 'لغو سفر', operator_name: 'ناصر کرمی', trip_date: '۱۴۰۵/۰۶/۲۰ ۲۲:۳۶', notes: 'اعلامیه ۲۴۹ نوع اول - ماشین چهارم - بنام اسماعیل حاتمی', created_at: '۱۴۰۵/۰۶/۲۰' },
-  { id: 983, trip_number: 'سفر ۹۸۳#', driver_id: 2, fleet_id: 2, freight_id: 2, status: 'لغو سفر', operator_name: 'ناصر کرمی', trip_date: '۱۴۰۵/۰۶/۲۰ ۲۲:۳۵', notes: 'سفر مسعود عقراوی', created_at: '۱۴۰۵/۰۶/۲۰' },
-  { id: 982, trip_number: 'سفر ۹۸۲#', driver_id: 3, fleet_id: 3, freight_id: 2, status: 'لغو سفر', operator_name: 'ناصر کرمی', trip_date: '۱۴۰۵/۰۶/۲۰ ۲۲:۳۳', notes: 'سفر علی اقبالی', created_at: '۱۴۰۵/۰۶/۲۰' },
-  { id: 981, trip_number: 'سفر ۹۸۱#', driver_id: 4, fleet_id: 4, freight_id: 2, status: 'فعال', operator_name: 'ناصر کرمی', trip_date: '۱۴۰۵/۰۶/۲۰ ۲۲:۳۲', notes: 'سفر شاپور معبودی', created_at: '۱۴۰۵/۰۶/۲۰' },
-  { id: 980, trip_number: 'سفر ۹۸۰#', driver_id: 5, fleet_id: 5, freight_id: 3, status: 'فعال', operator_name: 'مژگان مغازه ای', trip_date: '۱۴۰۵/۰۶/۲۰ ۱۹:۳۸', notes: 'سفر رحیم عبدالوند', created_at: '۱۴۰۵/۰۶/۲۰' },
+  { id: 984, trip_number: 'سفر ۹۸۴#', driver_id: 1, fleet_id: 1, freight_id: 1, status: 'لغو سفر', is_unpressed: true, operator_name: 'ناصر کرمی', trip_date: '۱۴۰۵/۰۶/۲۰ ۲۲:۳۶', notes: 'اعلامیه ۲۴۹ نوع اول - ماشین چهارم - بنام اسماعیل حاتمی', created_at: '۱۴۰۵/۰۶/۲۰' },
+  { id: 983, trip_number: 'سفر ۹۸۳#', driver_id: 2, fleet_id: 2, freight_id: 2, status: 'لغو سفر', is_unpressed: true, operator_name: 'ناصر کرمی', trip_date: '۱۴۰۵/۰۶/۲۰ ۲۲:۳۵', notes: 'سفر مسعود عقراوی', created_at: '۱۴۰۵/۰۶/۲۰' },
+  { id: 982, trip_number: 'سفر ۹۸۲#', driver_id: 3, fleet_id: 3, freight_id: 2, status: 'لغو سفر', is_unpressed: true, operator_name: 'ناصر کرمی', trip_date: '۱۴۰۵/۰۶/۲۰ ۲۲:۳۳', notes: 'سفر علی اقبالی', created_at: '۱۴۰۵/۰۶/۲۰' },
+  { id: 981, trip_number: 'سفر ۹۸۱#', driver_id: 4, fleet_id: 4, freight_id: 2, status: 'فعال', is_unpressed: false, operator_name: 'ناصر کرمی', trip_date: '۱۴۰۵/۰۶/۲۰ ۲۲:۳۲', notes: 'سفر شاپور معبودی', created_at: '۱۴۰۵/۰۶/۲۰' },
+  { id: 980, trip_number: 'سفر ۹۸۰#', driver_id: 5, fleet_id: 5, freight_id: 3, status: 'فعال', is_unpressed: false, operator_name: 'مژگان مغازه ای', trip_date: '۱۴۰۵/۰۶/۲۰ ۱۹:۳۸', notes: 'سفر رحیم عبدالوند', created_at: '۱۴۰۵/۰۶/۲۰' },
 ];
 
 // Helper: Convert Persian/Arabic digits
@@ -78,7 +78,7 @@ function ruleBasedExtract(rawMessage: string) {
   }
 
   // Driver Name
-  const nameMatch = msg.match(/(?:بنام|راننده)\s+([\u0600-\u06FF\s]{3,30}?)(?=(?:شماره|پلاک|کد|هوشمند|09|\d|\n|$))/);
+  const nameMatch = msg.match(/(?:بنام|نام\s*راننده|راننده:?)\s+([\u0600-\u06FF\s]{3,30}?)(?=(?:شماره|پلاک|کد|هوشمند|09|\d|\n|$))/);
   if (nameMatch) {
     const name = nameMatch[1].trim();
     driver.full_name = name;
@@ -94,7 +94,7 @@ function ruleBasedExtract(rawMessage: string) {
   if (smartMatch) fleet.smart_fleet_number = smartMatch[1];
 
   // License plate
-  const plateMatch = rawMessage.match(/(\d{2,3}\s*[\u0600-\u06FF]\s*\d{2,3}(?:\s*ایران\s*\d{2})?)/);
+  const plateMatch = msg.match(/(\d{2,3}\s*[الف-ی]\s*\d{2,3}(?:\s*ایران\s*\d{2})?)/);
   if (plateMatch) fleet.license_plate = plateMatch[1].trim();
 
   // Announcement number
@@ -195,6 +195,380 @@ function checkDuplicates(extracted: any) {
       existing_record: existingTrip,
       match_reason: existingTrip ? `سفر فعال با این راننده از قبل ثبت شده است` : null
     }
+  };
+}
+
+// -------------------------------------------------------------
+// FORMAT VALIDATION & ACCEPTABLE FORMATS ENGINE
+// -------------------------------------------------------------
+
+function validateNationalIdChecksum(code: string): boolean {
+  const clean = toEnglishDigits(code).replace(/\D/g, '');
+  if (clean.length !== 10) return false;
+  if (/^(\d)\1{9}$/.test(clean)) return false;
+  let sum = 0;
+  for (let i = 0; i < 9; i++) {
+    sum += parseInt(clean[i], 10) * (10 - i);
+  }
+  const remainder = sum % 11;
+  const checkDigit = parseInt(clean[9], 10);
+  return remainder < 2 ? checkDigit === remainder : checkDigit === (11 - remainder);
+}
+
+function validatePlateFormat(plate: string, requireCommercialLetter = false): boolean {
+  if (!plate || !plate.trim()) return false;
+  const clean = toEnglishDigits(plate).trim();
+  const regex = /(\d{2,3})\s*([الف-ی])\s*(\d{2,3})(?:\s*ایران\s*(\d{2}))?/;
+  const match = clean.match(regex);
+  if (!match) return false;
+  if (requireCommercialLetter) {
+    const letter = match[2];
+    if (letter !== 'ع' && letter !== 'ک') return false;
+  }
+  return true;
+}
+
+let currentFormatConfig = {
+  national_id: {
+    enabled: true,
+    required: true,
+    strictChecksum: true,
+    pattern: '^\\d{10}$',
+    errorMessage: 'کد ملی راننده نامعتبر است (باید دقیقاً ۱۰ رقم با کنترل چک‌سام معتبر ثبت احوال باشد).'
+  },
+  license_plate: {
+    enabled: true,
+    required: true,
+    requireCommercialLetter: false,
+    pattern: '^(\\d{2,3})\\s*([الف-ی])\\s*(\\d{2,3})(?:\\s*ایران\\s*(\\d{2}))?$',
+    errorMessage: 'پلاک خودرو با الگوی استاندارد پلاک ترابری (مانند ۱۵۴ ع ۱۶ ایران ۴۳) همخوانی ندارد.'
+  },
+  smart_fleet_number: {
+    enabled: true,
+    required: false,
+    minDigits: 5,
+    maxDigits: 9,
+    errorMessage: 'شماره کارت هوشمند ناوگان/راننده باید بین ۵ تا ۹ رقم عددی باشد.'
+  },
+  mobile_number: {
+    enabled: true,
+    required: true,
+    pattern: '^09\\d{9}$',
+    errorMessage: 'شماره همراه راننده نامعتبر است (باید ۱۱ رقم و با ۰۹ آغاز شود).'
+  },
+  announcement_number: {
+    enabled: true,
+    required: true,
+    pattern: '^\\d{2,8}$',
+    errorMessage: 'شماره اعلام بار یا اعلامیه نامعتبر است (باید عدد معتبر ۲ تا ۸ رقمی باشد).'
+  },
+  route: {
+    enabled: true,
+    required: true,
+    errorMessage: 'مسیر حمل بار (مبدا بارگیری یا مقصد تخلیه) مشخص نشده است.'
+  },
+  prices: {
+    enabled: true,
+    required: false,
+    errorMessage: 'مبلغ کرایه صافی یا کل مشخص نشده است.'
+  }
+};
+
+function validateAgainstRules(data: any, config: typeof currentFormatConfig): { isValid: boolean; warnings: string[] } {
+  const warnings: string[] = [];
+
+  // 1. National ID
+  if (config.national_id.enabled) {
+    const nid = data.driver?.national_id ? toEnglishDigits(data.driver.national_id).replace(/\D/g, '') : '';
+    if (!nid) {
+      if (config.national_id.required) {
+        warnings.push('کد ملی راننده در متن پیام یافت نشد (الزامی است).');
+      }
+    } else {
+      if (nid.length !== 10) {
+        warnings.push(`کد ملی راننده (${nid}) نامعتبر است؛ باید دقیقاً ۱۰ رقم باشد.`);
+      } else if (config.national_id.strictChecksum && !validateNationalIdChecksum(nid)) {
+        warnings.push(`کد ملی (${nid}) در محاسبات کنترل ثبت‌احوال نامعتبر است (چک‌سام اشتباه است).`);
+      }
+    }
+  }
+
+  // 2. License Plate
+  if (config.license_plate.enabled) {
+    const plate = data.fleet?.license_plate ? String(data.fleet.license_plate).trim() : '';
+    if (!plate) {
+      if (config.license_plate.required) {
+        warnings.push('پلاک انتظامی کامیون/ناوگان قید نشده است (الزامی است).');
+      }
+    } else {
+      if (!validatePlateFormat(plate, config.license_plate.requireCommercialLetter)) {
+        warnings.push(`پلاک خودرو (${plate}) با ساختار استاندارد پلاک ترابری (مانند ۱۵۴ ع ۱۶ ایران ۴۳) مطابقت ندارد.`);
+      }
+    }
+  }
+
+  // 3. Driver Mobile
+  if (config.mobile_number.enabled) {
+    const mobile = data.driver?.mobile_number ? toEnglishDigits(data.driver.mobile_number).replace(/\D/g, '') : '';
+    if (!mobile) {
+      if (config.mobile_number.required) {
+        warnings.push('شماره تلفن همراه راننده قید نشده است (الزامی است).');
+      }
+    } else {
+      if (!/^09\d{9}$/.test(mobile)) {
+        warnings.push(`شماره همراه راننده (${mobile}) نامعتبر است؛ باید با ۰۹ آغاز شده و ۱۱ رقم باشد.`);
+      }
+    }
+  }
+
+  // 4. Smart Fleet Number
+  if (config.smart_fleet_number.enabled) {
+    const smart = data.fleet?.smart_fleet_number ? toEnglishDigits(data.fleet.smart_fleet_number).replace(/\D/g, '') : '';
+    if (!smart) {
+      if (config.smart_fleet_number.required) {
+        warnings.push('شماره کارت هوشمند ناوگان قید نشده است.');
+      }
+    } else {
+      if (smart.length < config.smart_fleet_number.minDigits || smart.length > config.smart_fleet_number.maxDigits) {
+        warnings.push(`شماره کارت هوشمند (${smart}) باید بین ${config.smart_fleet_number.minDigits} تا ${config.smart_fleet_number.maxDigits} رقم باشد.`);
+      }
+    }
+  }
+
+  // 5. Freight Announcement Number
+  if (config.announcement_number.enabled) {
+    const ann = data.freight?.announcement_number ? toEnglishDigits(data.freight.announcement_number).replace(/\D/g, '') : '';
+    if (!ann) {
+      if (config.announcement_number.required) {
+        warnings.push('شماره اعلام بار یا اعلامیه قید نشده است (الزامی است).');
+      }
+    } else {
+      if (ann.length < 2 || ann.length > 8) {
+        warnings.push(`شماره اعلام بار (${ann}) باید عدد بین ۲ تا ۸ رقمی باشد.`);
+      }
+    }
+  }
+
+  // 6. Route
+  if (config.route.enabled && config.route.required) {
+    const origin = data.freight?.origin?.trim();
+    const dest = data.freight?.destination?.trim();
+    if (!origin && !dest) {
+      warnings.push('مسیر حمل بار (مبدا بارگیری یا مقصد تخلیه) مشخص نشده است.');
+    } else if (!origin) {
+      warnings.push('مبدا بارگیری بار مشخص نشده است.');
+    } else if (!dest) {
+      warnings.push('مقصد تخلیه بار مشخص نشده است.');
+    }
+  }
+
+  // 7. Driver Name
+  if (!data.driver?.full_name || data.driver.full_name.trim().length < 3) {
+    warnings.push('نام و نام‌خانوادگی راننده در متن پیام مشخص نشده است.');
+  }
+
+  return {
+    isValid: warnings.length === 0,
+    warnings
+  };
+}
+
+// -------------------------------------------------------------
+// SHARED GROUP CHAT STORE (Seen by all users)
+// -------------------------------------------------------------
+
+let groupMessagesStore: any[] = [
+  {
+    id: 'grp-msg-1',
+    sender: 'user',
+    user_id: 'op-1',
+    user_name: 'ناصر مدیر',
+    user_role: 'مدیر ترابری و پایانه',
+    avatar_color: '#f59e0b',
+    message_type: 'user_freight',
+    text: `ناصر مدیر
+14050621
+اعلامیه ۲۴۹
+نوع اول
+ماشین چهارم
+شماره ملی راننده ۴۶۴۰۱۱۹۴۰۲ بنام اسماعیل حاتمی
+شماره کامیون ۱۵۴ع۱۶ ایران ۴۳
+شماره هوشمند ۴۲۴۸۹۹۳
+09162961902
+
+از کاشی اصفهان به گمرک شلمچه حواله آقای میر هاشمی
+
+صافی ۴۶ م
+
+500 ✅
+کل ۵۳ م`,
+    timestamp: '۱۰:۲۴'
+  },
+  {
+    id: 'grp-msg-2',
+    sender: 'bot',
+    message_type: 'bot_approved',
+    text: '✅ تاییدیه: اطلاعات اعلام بار تایید شد و با وضعیت «پردازش‌نشده (Unpressed)» در دیتابیس ثبت گردید.',
+    timestamp: '۱۰:۲۵',
+    approved_info: {
+      trip_id: 984,
+      trip_number: 'سفر ۹۸۴#',
+      is_unpressed: true,
+      driver_name: 'اسماعیل حاتمی',
+      driver_national_id: '4640119402',
+      driver_mobile: '09162961902',
+      license_plate: '۱۶ ع ۱۵۴ ایران ۴۳',
+      smart_fleet_number: '4248993',
+      announcement_number: '249',
+      origin: 'کاشی اصفهان (نجف آباد)',
+      destination: 'گمرک شلمچه',
+      net_price: '۴۶ م',
+      total_price: '۵۳ م',
+      commission: '۵۰۰',
+      timestamp: '۱۰:۲۵'
+    }
+  },
+  {
+    id: 'grp-msg-3',
+    sender: 'user',
+    user_id: 'op-2',
+    user_name: 'رضا رضایی',
+    user_role: 'متصدی اعلام بار',
+    avatar_color: '#3b82f6',
+    message_type: 'user_freight',
+    text: 'اعلام بار 249 راننده احمد حسینی کد ملی 45892 برای حمل پالت کاشی از نجف آباد به گمرک مهران، پلاک 1234',
+    timestamp: '۱۰:۳۱'
+  },
+  {
+    id: 'grp-msg-4',
+    sender: 'bot',
+    message_type: 'bot_warning',
+    text: '⚠️ اخطار: فرمت نامعتبر اطلاعات اعلام بار',
+    timestamp: '۱۰:۳۱',
+    warning_reasons: [
+      'کد ملی راننده (45892) نامعتبر است؛ باید دقیقاً ۱۰ رقم با کنترل چک‌سام معتبر ثبت احوال باشد.',
+      'پلاک خودرو (1234) با الگوی استاندارد پلاک ترابری (مانند ۱۵۴ ع ۱۶ ایران ۴۳) همخوانی ندارد.',
+      'شماره همراه راننده در پیام قید نشده است (الزامی است).'
+    ]
+  }
+];
+
+// Helper: Save freight registration to database with UNPRESSED flag
+function registerFreightToDatabase(extracted: any, operatorName = 'اپراتور سامانه', rawText = '') {
+  const { driver: dData, fleet: flData, freight: frData } = extracted;
+
+  // 1. Resolve Driver
+  let driverId = 0;
+  const cleanNid = dData?.national_id ? toEnglishDigits(dData.national_id).replace(/\D/g, '') : null;
+  const cleanPhone = dData?.mobile_number ? toEnglishDigits(dData.mobile_number).replace(/\D/g, '') : null;
+
+  let existingDriver = driversStore.find(d => 
+    (cleanNid && d.national_id === cleanNid) ||
+    (cleanPhone && d.mobile_number === cleanPhone)
+  );
+
+  if (existingDriver) {
+    driverId = existingDriver.id;
+    if (!existingDriver.mobile_number && cleanPhone) existingDriver.mobile_number = cleanPhone;
+    if (existingDriver.full_name === 'نامشخص' && dData?.full_name) existingDriver.full_name = dData.full_name;
+  } else {
+    driverId = driversStore.length ? Math.max(...driversStore.map(d => d.id)) + 1 : 1;
+    const newDriver = {
+      id: driverId,
+      first_name: dData?.first_name || null,
+      last_name: dData?.last_name || null,
+      full_name: dData?.full_name || 'راننده ثبت‌شده',
+      national_id: cleanNid,
+      mobile_number: cleanPhone,
+      score: 5.0,
+      created_at: '۱۴۰۵/۰۶/۲۱',
+      trip_count: 1,
+    };
+    driversStore.unshift(newDriver);
+  }
+
+  // 2. Resolve Fleet
+  let fleetId = 0;
+  const cleanPlate = flData?.license_plate ? toEnglishDigits(flData.license_plate).replace(/\s+/g, '') : null;
+  const cleanSmart = flData?.smart_fleet_number ? toEnglishDigits(flData.smart_fleet_number).replace(/\D/g, '') : null;
+
+  let existingFleet = fleetsStore.find(f =>
+    (cleanPlate && toEnglishDigits(f.license_plate).replace(/\s+/g, '') === cleanPlate) ||
+    (cleanSmart && f.smart_fleet_number === cleanSmart)
+  );
+
+  if (existingFleet) {
+    fleetId = existingFleet.id;
+  } else {
+    fleetId = fleetsStore.length ? Math.max(...fleetsStore.map(f => f.id)) + 1 : 1;
+    const newFleet = {
+      id: fleetId,
+      license_plate: flData?.license_plate || 'پلاک نامشخص',
+      smart_fleet_number: cleanSmart,
+      vehicle_type: flData?.vehicle_type || 'کامیون',
+      vehicle_turn: flData?.vehicle_turn || null,
+      created_at: '۱۴۰۵/۰۶/۲۱',
+    };
+    fleetsStore.unshift(newFleet);
+  }
+
+  // 3. Resolve Freight (ALWAYS marked with is_unpressed: true)
+  let freightId = 0;
+  const cleanAnn = frData?.announcement_number ? toEnglishDigits(frData.announcement_number) : null;
+  let existingFreight = freightsStore.find(fr => cleanAnn && fr.announcement_number === cleanAnn);
+
+  if (existingFreight) {
+    freightId = existingFreight.id;
+  } else {
+    freightId = freightsStore.length ? Math.max(...freightsStore.map(fr => fr.id)) + 1 : 1;
+    const newFreight = {
+      id: freightId,
+      announcement_number: cleanAnn || String(Date.now()).slice(-4),
+      announcement_type: frData?.announcement_type || 'نوع اول',
+      customer_reference: frData?.customer_reference || 'حواله مستقیم',
+      origin: frData?.origin || 'مبدا نامشخص',
+      destination: frData?.destination || 'مقصد نامشخص',
+      cargo_type: frData?.cargo_type || 'پالت کاشی / بار عمومی',
+      weight: frData?.weight || null,
+      net_price: frData?.net_price || null,
+      total_price: frData?.total_price || null,
+      commission: frData?.commission || '۵۰۰',
+      bill_of_lading_company: 'ایمان بار',
+      agent_name: operatorName,
+      is_unpressed: true, // USER REQUIREMENT: all info should freight registration should send to database with a unpressed flag
+      created_at: '۱۴۰۵/۰۶/۲۱',
+    };
+    freightsStore.unshift(newFreight);
+  }
+
+  // 4. Create Trip (ALWAYS marked with is_unpressed: true)
+  const newTripId = tripsStore.length ? Math.max(...tripsStore.map(t => t.id)) + 1 : 985;
+  const tripNum = `سفر ${newTripId}#`;
+  const nowPersian = `۱۴۰۵/۰۶/۲۱ ${new Date().toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' })}`;
+
+  const newTrip = {
+    id: newTripId,
+    trip_number: tripNum,
+    driver_id: driverId,
+    fleet_id: fleetId,
+    freight_id: freightId,
+    status: 'فعال' as const,
+    is_unpressed: true, // USER REQUIREMENT: unpressed flag
+    operator_name: operatorName,
+    trip_date: nowPersian,
+    notes: rawText,
+    created_at: '۱۴۰۵/۰۶/۲۱',
+  };
+
+  tripsStore.unshift(newTrip);
+
+  return {
+    trip_id: newTripId,
+    trip_number: tripNum,
+    is_unpressed: true,
+    driver: driversStore.find(d => d.id === driverId),
+    fleet: fleetsStore.find(f => f.id === fleetId),
+    freight: freightsStore.find(fr => fr.id === freightId),
   };
 }
 
@@ -435,6 +809,7 @@ app.post('/api/confirm', (req, res) => {
         net_price: frData.net_price || null,
         total_price: frData.total_price || null,
         commission: frData.commission || '۵۰۰',
+        is_unpressed: true,
         bill_of_lading_company: 'ایمان بار',
         agent_name: 'محمدحسین کرم سیچانی',
         created_at: '۱۴۰۵/۰۶/۲۱',
@@ -454,6 +829,7 @@ app.post('/api/confirm', (req, res) => {
       fleet_id: fleetId,
       freight_id: freightId,
       status: 'فعال' as const,
+      is_unpressed: true,
       operator_name,
       trip_date: nowPersian,
       notes: raw_message,
@@ -488,6 +864,7 @@ app.post('/api/confirm', (req, res) => {
 app.get('/api/trips', (req, res) => {
   const query = (req.query.query as string || '').trim().toLowerCase();
   const status = (req.query.status as string || 'all').trim();
+  const unpressedFilter = req.query.unpressed as string | undefined;
 
   let filtered = tripsStore.map(t => ({
     ...t,
@@ -498,6 +875,12 @@ app.get('/api/trips', (req, res) => {
 
   if (status !== 'all') {
     filtered = filtered.filter(t => t.status === status);
+  }
+
+  if (unpressedFilter === 'true') {
+    filtered = filtered.filter(t => t.is_unpressed === true);
+  } else if (unpressedFilter === 'false') {
+    filtered = filtered.filter(t => t.is_unpressed === false);
   }
 
   if (query) {
@@ -556,6 +939,225 @@ app.get('/api/freights', (req, res) => {
     );
   }
   res.json({ success: true, items, total: items.length });
+});
+
+// -------------------------------------------------------------
+// GROUP CHAT & VALIDATION RULES ENDPOINTS
+// -------------------------------------------------------------
+
+// Get all group chat messages (seen identically by all operators)
+app.get('/api/group-messages', (req, res) => {
+  res.json({
+    success: true,
+    messages: groupMessagesStore,
+    total: groupMessagesStore.length
+  });
+});
+
+// Post a message in the group chat
+app.post('/api/group-messages', async (req, res) => {
+  try {
+    const { text, user_id = 'op-1', user_name = 'همکار ترابری', user_role = 'متصدی', avatar_color = '#3b82f6' } = req.body;
+    if (!text || typeof text !== 'string' || !text.trim()) {
+      return res.status(400).json({ success: false, error: 'متن پیام نمی‌تواند خالی باشد.' });
+    }
+
+    const trimmed = text.trim();
+    const nowTime = new Date().toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' });
+
+    // 1. Create the user's message in the group
+    const userMessage = {
+      id: `msg-${Date.now()}`,
+      sender: 'user' as const,
+      user_id,
+      user_name,
+      user_role,
+      avatar_color,
+      message_type: 'user_freight' as const,
+      text: trimmed,
+      timestamp: nowTime
+    };
+    groupMessagesStore.push(userMessage);
+
+    // 2. Perform Extraction (AI or rule-based)
+    let extractedData: any = null;
+    if (process.env.GEMINI_API_KEY) {
+      try {
+        const ai = new GoogleGenAI({
+          apiKey: process.env.GEMINI_API_KEY,
+          httpOptions: { headers: { 'User-Agent': 'aistudio-build' } }
+        });
+        const prompt = `You are an Iranian freight data extraction engine.
+Extract structured logistics JSON from this Persian message:
+"""${trimmed}"""
+
+Return strictly a JSON object:
+{
+  "driver": {
+    "first_name": string or null,
+    "last_name": string or null,
+    "full_name": string or null,
+    "mobile_number": string (11 digits e.g. 09123456789) or null,
+    "national_id": string (10 digits) or null
+  },
+  "fleet": {
+    "license_plate": string (e.g. 154ع16 ایران 43) or null,
+    "smart_fleet_number": string or null,
+    "vehicle_type": string or null,
+    "vehicle_turn": string or null
+  },
+  "freight": {
+    "announcement_number": string or null,
+    "announcement_type": string or null,
+    "customer_reference": string or null,
+    "origin": string or null,
+    "destination": string or null,
+    "cargo_type": string or null,
+    "weight": string or null,
+    "net_price": string or null,
+    "total_price": string or null,
+    "commission": string or null
+  }
+}
+Convert Persian numerals to standard digits (0-9). Do not hallucinate missing data.`;
+
+        const aiRes = await ai.models.generateContent({
+          model: 'gemini-3.8-flash',
+          contents: prompt,
+          config: { responseMimeType: 'application/json', temperature: 0.1 }
+        });
+        if (aiRes.text) extractedData = JSON.parse(aiRes.text);
+      } catch (e) {
+        console.warn('Gemini extraction failed, using rule-based parser:', e);
+      }
+    }
+
+    if (!extractedData) {
+      extractedData = ruleBasedExtract(trimmed);
+    }
+
+    // 3. Strict Validation against Active Acceptable Formats
+    const validation = validateAgainstRules(extractedData, currentFormatConfig);
+
+    let botMessage: any = null;
+
+    if (!validation.isValid) {
+      // THE BOT ONLY SENDS A WARNING REGARDING UNACCEPTABLE FORMATS
+      botMessage = {
+        id: `bot-warn-${Date.now()}`,
+        sender: 'bot' as const,
+        message_type: 'bot_warning' as const,
+        text: '⚠️ اخطار: فرمت نامعتبر اطلاعات اعلام بار',
+        timestamp: nowTime,
+        warning_reasons: validation.warnings
+      };
+      groupMessagesStore.push(botMessage);
+
+      return res.json({
+        success: true,
+        is_approved: false,
+        userMessage,
+        botMessage,
+        warnings: validation.warnings
+      });
+    }
+
+    // 4. THE BOT ONLY SENDS AN APPROVED INFO & ALL INFO SENDS TO DB WITH UNPRESSED FLAG
+    const regResult = registerFreightToDatabase(extractedData, user_name, trimmed);
+
+    botMessage = {
+      id: `bot-appr-${Date.now()}`,
+      sender: 'bot' as const,
+      message_type: 'bot_approved' as const,
+      text: '✅ تاییدیه: اطلاعات اعلام بار تایید شد و با وضعیت «پردازش‌نشده (Unpressed)» در دیتابیس ثبت گردید.',
+      timestamp: nowTime,
+      approved_info: {
+        trip_id: regResult.trip_id,
+        trip_number: regResult.trip_number,
+        is_unpressed: true,
+        driver_name: regResult.driver?.full_name || 'راننده ثبت‌شده',
+        driver_national_id: regResult.driver?.national_id || null,
+        driver_mobile: regResult.driver?.mobile_number || null,
+        license_plate: regResult.fleet?.license_plate || null,
+        smart_fleet_number: regResult.fleet?.smart_fleet_number || null,
+        announcement_number: regResult.freight?.announcement_number || null,
+        origin: regResult.freight?.origin || null,
+        destination: regResult.freight?.destination || null,
+        net_price: regResult.freight?.net_price || null,
+        total_price: regResult.freight?.total_price || null,
+        commission: regResult.freight?.commission || null,
+        timestamp: nowTime
+      }
+    };
+    groupMessagesStore.push(botMessage);
+
+    return res.json({
+      success: true,
+      is_approved: true,
+      userMessage,
+      botMessage,
+      trip: regResult
+    });
+
+  } catch (err: any) {
+    console.error('Error posting to group chat:', err);
+    res.status(500).json({ success: false, error: err.message || 'خطا در ارسال پیام به گروه' });
+  }
+});
+
+// Clear or reset group chat messages
+app.delete('/api/group-messages', (req, res) => {
+  groupMessagesStore = [];
+  res.json({ success: true, message: 'تاریخچه پیام‌های گروه پاکسازی شد.' });
+});
+
+// Get active format rules
+app.get('/api/format-rules', (req, res) => {
+  res.json({ success: true, config: currentFormatConfig });
+});
+
+// Update acceptable formats configuration
+app.post('/api/format-rules', (req, res) => {
+  try {
+    if (req.body && req.body.config) {
+      currentFormatConfig = { ...currentFormatConfig, ...req.body.config };
+      res.json({ success: true, message: 'قوانین و فرمت‌های مجاز به‌روزرسانی شد.', config: currentFormatConfig });
+    } else {
+      res.status(400).json({ success: false, error: 'پیکربندی فرمت نامعتبر است.' });
+    }
+  } catch (e: any) {
+    res.status(500).json({ success: false, error: e.message });
+  }
+});
+
+// Toggle unpressed flag for a trip
+app.patch('/api/trips/:id/toggle-unpressed', (req, res) => {
+  const tripId = parseInt(req.params.id, 10);
+  const trip = tripsStore.find(t => t.id === tripId);
+  if (!trip) {
+    return res.status(404).json({ success: false, error: 'سفر یافت نشد.' });
+  }
+
+  trip.is_unpressed = !trip.is_unpressed;
+
+  // Also sync freight unpressed flag if linked
+  const freight = freightsStore.find(fr => fr.id === trip.freight_id);
+  if (freight) {
+    freight.is_unpressed = trip.is_unpressed;
+  }
+
+  const resolved = {
+    ...trip,
+    driver: driversStore.find(d => d.id === trip.driver_id),
+    fleet: fleetsStore.find(f => f.id === trip.fleet_id),
+    freight: freight || null,
+  };
+
+  res.json({
+    success: true,
+    message: trip.is_unpressed ? 'سفر به وضعیت پردازش‌نشده تغییر یافت.' : 'سفر به عنوان پردازش‌شده علامت‌گذاری شد.',
+    trip: resolved
+  });
 });
 
 // Schema mapping config API

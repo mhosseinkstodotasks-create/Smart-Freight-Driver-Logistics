@@ -1,5 +1,5 @@
 import React from 'react';
-import { MessageSquarePlus, Navigation, Users, Truck, Package, Database } from 'lucide-react';
+import { MessageSquare, Navigation, Users, Truck, Package, Database } from 'lucide-react';
 
 export type NavTab = 'chat' | 'trips' | 'drivers' | 'fleets' | 'freights' | 'database';
 
@@ -17,8 +17,8 @@ export const BottomNav: React.FC<BottomNavProps> = ({
   const tabs: { id: NavTab; label: string; icon: React.ReactNode; badge?: number }[] = [
     {
       id: 'chat',
-      label: 'ثبت هوشمند',
-      icon: <MessageSquarePlus className="w-5 h-5" />,
+      label: 'گروه اعلام بار',
+      icon: <MessageSquare className="w-5 h-5" />,
       badge: pendingExtractionsCount,
     },
     {
@@ -52,6 +52,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({
     <nav
       id="bottom-navigation-bar"
       className="fixed bottom-0 left-0 right-0 z-30 bg-white border-t border-slate-200 shadow-lg select-none"
+      dir="rtl"
     >
       <div className="max-w-md md:max-w-xl mx-auto flex items-center justify-around px-1 py-1.5">
         {tabs.map((tab) => {
@@ -70,7 +71,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({
               <div className="relative">
                 {tab.icon}
                 {tab.badge && tab.badge > 0 ? (
-                  <span className="absolute -top-1.5 -right-2 bg-red-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center ring-2 ring-white">
+                  <span className="absolute -top-1.5 -right-2 bg-amber-500 text-slate-950 text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center ring-2 ring-white">
                     {tab.badge}
                   </span>
                 ) : null}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Header } from './components/Header';
 import { BottomNav, NavTab } from './components/BottomNav';
 import { ChatScreen } from './components/ChatScreen';
@@ -7,14 +7,17 @@ import { DriversScreen } from './components/DriversScreen';
 import { FleetsScreen } from './components/FleetsScreen';
 import { FreightsScreen } from './components/FreightsScreen';
 import { DatabaseMappingModal } from './components/DatabaseMappingModal';
+import { FormatSettingsModal } from './components/FormatSettingsModal';
 import {
   Driver,
   Fleet,
   FreightAnnouncement,
   Trip,
   ChatMessage,
-  ExtractedData,
   SchemaMappingConfig,
+  FormatConfig,
+  defaultFormatConfig,
+  GroupUser,
 } from './types';
 import {
   initialDrivers,
@@ -23,14 +26,14 @@ import {
   initialTrips,
   defaultSchemaMapping,
 } from './data/mockData';
-import { getPersianNow } from './utils/persian';
-import { CheckCircle2, AlertCircle } from 'lucide-react';
+import { CheckCircle2, AlertCircle, RefreshCw } from 'lucide-react';
 
 export function App() {
   const [activeTab, setActiveTab] = useState<NavTab>('chat');
   const [isDbModalOpen, setIsDbModalOpen] = useState(false);
+  const [isFormatModalOpen, setIsFormatModalOpen] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
+  const [isLoadingData, setIsLoadingData] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   // Entities state
@@ -39,333 +42,264 @@ export function App() {
   const [freights, setFreights] = useState<FreightAnnouncement[]>(initialFreights);
   const [trips, setTrips] = useState<Trip[]>(initialTrips);
   const [mapping, setMapping] = useState<SchemaMappingConfig>(defaultSchemaMapping);
+  const [formatConfig, setFormatConfig] = useState<FormatConfig>(defaultFormatConfig);
 
-  // Initial Chat Messages containing real example from screenshot
-  const [messages, setMessages] = useState<ChatMessage[]>([
-    {
-      id: 'msg-seed-1',
-      sender: 'employee',
-      text: `ناصر مدیر
-14050621
-اعلامیه ۲۴۹
-نوع اول
-ماشین چهارم
-شماره ملی راننده ۴۶۴۰۱۱۹۴۰۲ بنام اسماعیل حاتمی
-شماره کامیون ۱۵۴ع۱۶ ایران ۴۳
-شماره هوشمند ۴۲۴۸۹۹۳
-09162961902
-
-از کاشی اصفهان به گمرک شلمچه حواله آقای میر هاشمی
-
-صافی ۴۶ م
-
-500 ✅
-کل ۵۳ م`,
-      timestamp: '۲۲:۳۶',
-    },
-    {
-      id: 'msg-seed-2',
-      sender: 'ai',
-      text: 'اطلاعات اعلام بار و راننده با موفقیت شناسایی و استخراج شد. لطفاً بررسی و تأیید فرمایید:',
-      timestamp: '۲۲:۳۶',
-      status: 'confirmed',
-      savedTripNumber: 'سفر ۹۸۴#',
-      savedTripId: 984,
-      extracted: {
-        driver: {
-          first_name: 'اسماعیل',
-          last_name: 'حاتمی',
-          full_name: 'اسماعیل حاتمی',
-          national_id: '4640119402',
-          mobile_number: '09162961902',
-        },
-        fleet: {
-          license_plate: '۱۶ ع ۱۵۴ ایران ۴۳',
-          smart_fleet_number: '4248993',
-          vehicle_type: 'کامیون ده چرخ',
-          vehicle_turn: 'ماشین چهارم',
-        },
-        freight: {
-          announcement_number: '249',
-          announcement_type: 'نوع اول',
-          customer_reference: 'حواله آقای میر هاشمی',
-          origin: 'کاشی اصفهان (نجف آباد)',
-          destination: 'گمرک شلمچه',
-          cargo_type: 'پالت کاشی میرجلیلی',
-          weight: null,
-          net_price: '۴۶ م',
-          total_price: '۵۳ م',
-          commission: '۵۰۰',
-        },
-        trip: {
-          available: true,
-          notes: 'اعلامیه ۲۴۹ نوع اول - ماشین چهارم',
-        },
-        missing_fields: [],
-        confidence: 0.98,
-      },
-      duplicates: {
-        driver: {
-          is_duplicate: true,
-          match_reason: 'راننده با این مشخصات در سیستم موجود است',
-        },
-        fleet: {
-          is_duplicate: true,
-          match_reason: 'این ناوگان از قبل ثبت شده است',
-        },
-        freight: {
-          is_duplicate: true,
-          match_reason: 'اعلام بار قبلاً ثبت شده است',
-        },
-        trip: {
-          is_duplicate: false,
-        },
-      },
-    },
-  ]);
-
-  // Load initial data from backend if server is up
-  useEffect(() => {
-    const fetchTrips = async () => {
-      try {
-        const res = await fetch('/api/trips');
-        if (res.ok) {
-          const data = await res.json();
-          if (data.items && data.items.length > 0) {
-            setTrips(data.items);
-          }
-        }
-      } catch (e) {
-        // Fallback to initial mock data seamlessly
-      }
-    };
-    fetchTrips();
-  }, []);
+  // Group Messages State
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
     setTimeout(() => setToastMessage(null), 3500);
   };
 
-  // Handle employee sending a new message
-  const handleSendMessage = async (text: string) => {
-    const userMsgId = `usr-${Date.now()}`;
-    const nowTime = new Date().toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' });
+  // Fetch initial data from server
+  const loadServerData = useCallback(async () => {
+    setIsLoadingData(true);
+    try {
+      // 1. Fetch group messages
+      const msgRes = await fetch('/api/group-messages');
+      if (msgRes.ok) {
+        const msgData = await msgRes.json();
+        if (Array.isArray(msgData.messages)) {
+          setMessages(msgData.messages);
+        }
+      }
 
-    const newUserMsg: ChatMessage = {
-      id: userMsgId,
-      sender: 'employee',
-      text,
-      timestamp: nowTime,
-    };
+      // 2. Fetch format rules
+      const rulesRes = await fetch('/api/format-rules');
+      if (rulesRes.ok) {
+        const rulesData = await rulesRes.json();
+        if (rulesData.success && rulesData.formatConfig) {
+          setFormatConfig(rulesData.formatConfig);
+        }
+      }
 
-    setMessages((prev) => [...prev, newUserMsg]);
+      // 3. Fetch trips
+      const tripsRes = await fetch('/api/trips');
+      if (tripsRes.ok) {
+        const tripsData = await tripsRes.json();
+        if (tripsData.items && tripsData.items.length > 0) {
+          setTrips(tripsData.items);
+        }
+      }
+
+      // 4. Fetch freights
+      const freightsRes = await fetch('/api/freights');
+      if (freightsRes.ok) {
+        const freightsData = await freightsRes.json();
+        if (freightsData.items && freightsData.items.length > 0) {
+          setFreights(freightsData.items);
+        }
+      }
+
+      // 5. Fetch drivers
+      const driversRes = await fetch('/api/drivers');
+      if (driversRes.ok) {
+        const driversData = await driversRes.json();
+        if (driversData.items && driversData.items.length > 0) {
+          setDrivers(driversData.items);
+        }
+      }
+
+      // 6. Fetch fleets
+      const fleetsRes = await fetch('/api/fleets');
+      if (fleetsRes.ok) {
+        const fleetsData = await fleetsRes.json();
+        if (fleetsData.items && fleetsData.items.length > 0) {
+          setFleets(fleetsData.items);
+        }
+      }
+    } catch (e) {
+      console.warn('Backend fetch error or offline, fallback to mock state:', e);
+    } finally {
+      setIsLoadingData(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadServerData();
+  }, [loadServerData]);
+
+  // Handle employee sending a new message into the group chat
+  const handleSendMessage = async (text: string, user: GroupUser) => {
     setIsProcessing(true);
 
     try {
-      const response = await fetch('/api/extract', {
+      const response = await fetch('/api/group-messages', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: text, user_id: 'employee_operator' }),
+        body: JSON.stringify({
+          text,
+          user_id: user.id,
+          user_name: user.name,
+          user_role: user.role,
+          avatar_color: user.avatarColor,
+        }),
       });
 
       const resData = await response.json();
 
-      if (resData.success && resData.data) {
-        const aiMsg: ChatMessage = {
-          id: `ai-${Date.now()}`,
-          sender: 'ai',
-          text: resData.missing_fields && resData.missing_fields.length > 0
-            ? 'اطلاعات استخراج شد اما برخی از فیلدها در متن ذکر نشده بودند. لطفاً موارد را بررسی کنید:'
-            : 'اطلاعات اعلام بار، راننده و ناوگان استخراج گردید. لطفاً کارت زیر را بررسی و تأیید فرمایید:',
-          timestamp: new Date().toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' }),
-          status: 'pending_confirmation',
-          extracted: resData.data,
-          duplicates: resData.duplicates,
-        };
+      if (resData.success) {
+        // Append user message & bot message
+        setMessages((prev) => {
+          const next = [...prev, resData.userMessage];
+          if (resData.botMessage) {
+            next.push(resData.botMessage);
+          }
+          return next;
+        });
 
-        setMessages((prev) => [...prev, aiMsg]);
+        if (resData.is_approved && resData.trip) {
+          // Prepend new trip to list
+          setTrips((prev) => [resData.trip, ...prev]);
+
+          if (resData.trip.driver) {
+            setDrivers((prev) => {
+              const exists = prev.some((d) => d.id === resData.trip.driver.id);
+              return exists ? prev : [resData.trip.driver, ...prev];
+            });
+          }
+          if (resData.trip.fleet) {
+            setFleets((prev) => {
+              const exists = prev.some((f) => f.id === resData.trip.fleet.id);
+              return exists ? prev : [resData.trip.fleet, ...prev];
+            });
+          }
+          if (resData.trip.freight) {
+            setFreights((prev) => {
+              const exists = prev.some((fr) => fr.id === resData.trip.freight.id);
+              return exists ? prev : [resData.trip.freight, ...prev];
+            });
+          }
+
+          showToast('✅ اطلاعات اعلام بار تایید شد و با وضعیت «پردازش‌نشده (Unpressed)» در دیتابیس ذخیره گردید.');
+        } else {
+          showToast('⚠️ اخطار: اطلاعات ارسالی با فرمت‌های مجاز همخوانی ندارد.');
+        }
       } else {
-        throw new Error(resData.error || 'خطا در پردازش هوش مصنوعی');
+        throw new Error(resData.error || 'خطا در ثبت پیام');
       }
     } catch (err: any) {
-      console.error('Extraction error:', err);
-      // Fallback local rule-based extractor
-      const aiMsg: ChatMessage = {
-        id: `ai-${Date.now()}`,
-        sender: 'ai',
-        text: 'استخراج با الگوریتم پشتیبان انجام شد. لطفاً بررسی و تأیید فرمایید:',
-        timestamp: new Date().toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' }),
-        status: 'pending_confirmation',
-        extracted: {
-          driver: { full_name: 'راننده جدید', mobile_number: null, national_id: null, first_name: null, last_name: null },
-          fleet: { license_plate: '۱۵۴ ع ۱۶ ایران ۴۳', smart_fleet_number: '4248993', vehicle_type: 'کامیون', vehicle_turn: 'ماشین چهارم' },
-          freight: { announcement_number: '249', announcement_type: 'نوع اول', customer_reference: null, origin: 'اصفهان', destination: 'شلمچه', cargo_type: 'کاشی', weight: null, net_price: '۴۶ م', total_price: '۵۳ م', commission: '500' },
-          trip: { available: true },
-          missing_fields: ['کد ملی راننده', 'شماره همراه'],
-          confidence: 0.88,
-        },
-      };
-      setMessages((prev) => [...prev, aiMsg]);
+      console.error('Group chat send error:', err);
+      showToast(`خطا در ارتباط با سرور: ${err.message || 'نامشخص'}`);
     } finally {
       setIsProcessing(false);
     }
   };
 
-  // Handle confirmation: Persist to MySQL / Store
-  const handleConfirmExtraction = async (messageId: string, extractedData: ExtractedData) => {
-    setIsSaving(true);
+  // Toggle Unpressed flag for a trip
+  const handleToggleUnpressed = async (tripId: number) => {
     try {
-      const response = await fetch('/api/confirm', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          data: extractedData,
-          operator_name: 'ناصر مدیر',
-          raw_message: messages.find((m) => m.id === messageId)?.text || '',
-        }),
+      const response = await fetch(`/api/trips/${tripId}/toggle-unpressed`, {
+        method: 'PATCH',
       });
+      const data = await response.json();
 
-      const result = await response.json();
+      if (data.success) {
+        const nextUnpressed = data.is_unpressed;
 
-      if (result.success && result.trip) {
-        // Add new trip to top of list
-        setTrips((prev) => [result.trip, ...prev]);
-
-        // Update message state to confirmed
-        setMessages((prev) =>
-          prev.map((m) =>
-            m.id === messageId
-              ? {
-                  ...m,
-                  status: 'confirmed',
-                  savedTripId: result.trip_id,
-                  savedTripNumber: result.trip_number,
-                }
-              : m
-          )
+        // Update trips
+        setTrips((prev) =>
+          prev.map((t) => (t.id === tripId ? { ...t, is_unpressed: nextUnpressed } : t))
         );
 
-        // Update driver / fleet / freight stores
-        if (result.trip.driver) {
-          setDrivers((prev) => {
-            const exists = prev.some((d) => d.id === result.trip.driver.id);
-            return exists ? prev : [result.trip.driver, ...prev];
-          });
-        }
-        if (result.trip.fleet) {
-          setFleets((prev) => {
-            const exists = prev.some((f) => f.id === result.trip.fleet.id);
-            return exists ? prev : [result.trip.fleet, ...prev];
-          });
-        }
-        if (result.trip.freight) {
-          setFreights((prev) => {
-            const exists = prev.some((fr) => fr.id === result.trip.freight.id);
-            return exists ? prev : [result.trip.freight, ...prev];
-          });
-        }
+        // Update freights
+        setFreights((prev) =>
+          prev.map((fr) => {
+            const matchedTrip = trips.find((t) => t.id === tripId);
+            if (matchedTrip && matchedTrip.freight_id === fr.id) {
+              return { ...fr, is_unpressed: nextUnpressed };
+            }
+            return fr;
+          })
+        );
 
-        showToast(`✓ سفر جدید با موفقیت در دیتابیس ثبت شد: ${result.trip_number}`);
-      } else {
-        throw new Error(result.error || 'خطا در ثبت نهایی');
+        // Update messages
+        setMessages((prev) =>
+          prev.map((m) => {
+            if (m.approved_info && m.approved_info.trip_id === tripId) {
+              return {
+                ...m,
+                approved_info: {
+                  ...m.approved_info,
+                  is_unpressed: nextUnpressed,
+                },
+              };
+            }
+            return m;
+          })
+        );
+
+        showToast(
+          nextUnpressed
+            ? `وضعیت سفر به «پردازش‌نشده (Unpressed)» تغییر یافت.`
+            : `سفر به عنوان «پردازش‌شده (Pressed)» علامت‌گذاری شد.`
+        );
       }
     } catch (err: any) {
-      console.error('Confirm error:', err);
-      // Fallback local persistence
-      const newTripId = trips.length ? Math.max(...trips.map((t) => t.id)) + 1 : 985;
-      const tripNum = `سفر ${newTripId}#`;
-      const nowPersian = getPersianNow();
-
-      const newDriver: Driver = {
-        id: drivers.length + 1,
-        full_name: extractedData.driver.full_name || 'راننده ثبت‌شده',
-        national_id: extractedData.driver.national_id,
-        mobile_number: extractedData.driver.mobile_number,
-        created_at: '۱۴۰۵/۰۶/۲۱',
-      };
-
-      const newFleet: Fleet = {
-        id: fleets.length + 1,
-        license_plate: extractedData.fleet.license_plate || '۱۶ ع ۱۵۴ ایران ۴۳',
-        smart_fleet_number: extractedData.fleet.smart_fleet_number,
-        vehicle_turn: extractedData.fleet.vehicle_turn,
-      };
-
-      const newFreight: FreightAnnouncement = {
-        id: freights.length + 1,
-        announcement_number: extractedData.freight.announcement_number || '249',
-        origin: extractedData.freight.origin || 'اصفهان',
-        destination: extractedData.freight.destination || 'گمرک شلمچه',
-        net_price: extractedData.freight.net_price,
-        total_price: extractedData.freight.total_price,
-        commission: extractedData.freight.commission,
-      };
-
-      const newTrip: Trip = {
-        id: newTripId,
-        trip_number: tripNum,
-        driver_id: newDriver.id,
-        fleet_id: newFleet.id,
-        freight_id: newFreight.id,
-        status: 'فعال',
-        operator_name: 'ناصر مدیر',
-        trip_date: nowPersian,
-        driver: newDriver,
-        fleet: newFleet,
-        freight: newFreight,
-      };
-
-      setTrips((prev) => [newTrip, ...prev]);
-      setMessages((prev) =>
-        prev.map((m) =>
-          m.id === messageId
-            ? { ...m, status: 'confirmed', savedTripId: newTripId, savedTripNumber: tripNum }
-            : m
-        )
-      );
-
-      showToast(`✓ سفر ${tripNum} در سیستم ثبت شد.`);
-    } finally {
-      setIsSaving(false);
+      console.error('Failed to toggle unpressed:', err);
+      showToast('خطا در تغییر وضعیت پردازش سفر');
     }
   };
 
-  // Update extracted data after modal editing
-  const handleUpdateExtractionData = (messageId: string, updatedData: ExtractedData) => {
-    setMessages((prev) =>
-      prev.map((m) => (m.id === messageId ? { ...m, extracted: updatedData } : m))
-    );
-    showToast('تغییرات با موفقیت اعمال شد.');
+  // Save Format Rules
+  const handleSaveFormatRules = async (newConfig: FormatConfig) => {
+    try {
+      const res = await fetch('/api/format-rules', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ formatConfig: newConfig }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setFormatConfig(data.formatConfig);
+        showToast('قوانین فرمت‌های مجاز با موفقیت ذخیره شد.');
+      }
+    } catch (e) {
+      console.error('Error saving format rules:', e);
+      setFormatConfig(newConfig);
+      showToast('قوانین فرمت‌های مجاز ذخیره شد.');
+    }
   };
 
-  const handleClearChat = () => {
-    if (window.confirm('آیا مایل به پاکسازی تاریخچه گفتگو هستید؟')) {
+  // Clear Chat
+  const handleClearChat = async () => {
+    if (window.confirm('آیا مطمئن هستید که می‌خواهید تمام پیام‌های گروه پاکسازی شوند؟')) {
+      try {
+        await fetch('/api/group-messages', { method: 'DELETE' });
+      } catch (e) {
+        console.warn('Failed to clear on server:', e);
+      }
       setMessages([]);
+      showToast('پیام‌های گروه پاکسازی شدند.');
     }
   };
 
-  const pendingCount = messages.filter((m) => m.status === 'pending_confirmation').length;
+  const unpressedCount = trips.filter((t) => t.is_unpressed === true).length;
 
   return (
-    <div className="min-h-screen bg-slate-100 text-slate-900 flex flex-col font-sans selection:bg-amber-500 selection:text-slate-950">
+    <div className="min-h-screen bg-slate-100 text-slate-900 flex flex-col font-sans selection:bg-amber-500 selection:text-slate-950" dir="rtl">
       {/* App Header */}
       <Header
         activeTab={activeTab}
         onOpenDbModal={() => setIsDbModalOpen(true)}
+        onOpenFormatModal={() => setIsFormatModalOpen(true)}
+        onRefreshData={loadServerData}
+        isLoading={isLoadingData}
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 w-full max-w-5xl mx-auto">
+      <main className="flex-1 w-full max-w-5xl mx-auto p-2 sm:p-4">
         {activeTab === 'chat' && (
           <ChatScreen
             messages={messages}
             onSendMessage={handleSendMessage}
-            onConfirmExtraction={handleConfirmExtraction}
-            onUpdateExtractionData={handleUpdateExtractionData}
             onClearChat={handleClearChat}
+            onRefreshMessages={loadServerData}
+            onOpenFormatModal={() => setIsFormatModalOpen(true)}
+            onToggleUnpressed={handleToggleUnpressed}
+            onNavigateToTrips={() => setActiveTab('trips')}
             isProcessing={isProcessing}
-            isSaving={isSaving}
           />
         )}
 
@@ -373,6 +307,7 @@ export function App() {
           <TripsScreen
             trips={trips}
             onNewTripClick={() => setActiveTab('chat')}
+            onToggleUnpressed={handleToggleUnpressed}
           />
         )}
 
@@ -380,7 +315,9 @@ export function App() {
 
         {activeTab === 'fleets' && <FleetsScreen fleets={fleets} />}
 
-        {activeTab === 'freights' && <FreightsScreen freights={freights} />}
+        {activeTab === 'freights' && (
+          <FreightsScreen freights={freights} onToggleUnpressed={handleToggleUnpressed} />
+        )}
 
         {activeTab === 'database' && (
           <div className="p-4">
@@ -388,16 +325,24 @@ export function App() {
               <div className="w-12 h-12 rounded-2xl bg-sky-100 text-sky-700 flex items-center justify-center mx-auto">
                 <CheckCircle2 className="w-7 h-7" />
               </div>
-              <h2 className="text-lg font-bold text-slate-900">آداپتور پایگاه داده و پیکربندی MySQL</h2>
+              <h2 className="text-lg font-bold text-slate-900">آداپتور پایگاه داده و نگاشت جداول MySQL</h2>
               <p className="text-xs text-slate-600 leading-relaxed">
-                تمام فایل‌های لایه Repository و آداپتور پایگاه داده PHP و اسکریپت‌های بازرسی در پوشه <code>php_backend/</code> آماده بهره‌برداری هستند.
+                تمام فایل‌های لایه Repository و آداپتور پایگاه داده PHP و اسکریپت‌های بازرسی در پوشه <code>php_backend/</code> مستقر و با دیتابیس MySQL یکپارچه هستند. تمامی اطلاعات جدید با فلگ <code>is_unpressed: true</code> ذخیره می‌گردند.
               </p>
-              <button
-                onClick={() => setIsDbModalOpen(true)}
-                className="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-4 py-2.5 rounded-xl text-xs shadow-xs transition cursor-pointer"
-              >
-                مشاهده و تنظیم نگاشت جداول دیتابیس
-              </button>
+              <div className="flex flex-wrap justify-center gap-2">
+                <button
+                  onClick={() => setIsDbModalOpen(true)}
+                  className="bg-slate-900 hover:bg-slate-800 text-white font-bold px-4 py-2.5 rounded-xl text-xs shadow-xs transition cursor-pointer"
+                >
+                  مشاهده نگاشت جداول دیتابیس
+                </button>
+                <button
+                  onClick={() => setIsFormatModalOpen(true)}
+                  className="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-4 py-2.5 rounded-xl text-xs shadow-xs transition cursor-pointer"
+                >
+                  تنظیم فرمت‌های مجاز
+                </button>
+              </div>
             </div>
           </div>
         )}
@@ -407,7 +352,15 @@ export function App() {
       <BottomNav
         activeTab={activeTab}
         onTabChange={(tab) => setActiveTab(tab)}
-        pendingExtractionsCount={pendingCount}
+        pendingExtractionsCount={unpressedCount}
+      />
+
+      {/* Format Settings Modal */}
+      <FormatSettingsModal
+        isOpen={isFormatModalOpen}
+        onClose={() => setIsFormatModalOpen(false)}
+        config={formatConfig}
+        onSaveConfig={handleSaveFormatRules}
       />
 
       {/* Database Schema & Inspection Modal */}
@@ -424,11 +377,12 @@ export function App() {
       {/* Toast Notification */}
       {toastMessage && (
         <div className="fixed top-16 left-1/2 -translate-x-1/2 z-50 bg-slate-900 text-white px-4 py-2.5 rounded-2xl shadow-xl border border-slate-800 text-xs font-bold flex items-center gap-2 animate-fade-in">
-          <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+          <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
           <span>{toastMessage}</span>
         </div>
       )}
     </div>
   );
 }
+
 export default App;
